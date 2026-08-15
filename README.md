@@ -4,7 +4,7 @@ A simple web-based AI research assistant for students. Upload a research paper P
 get an AI summary, ask grounded questions with page citations, search the paper,
 and compare two papers.
 
-Built with **Python + Flask + SQLite + HTML/CSS/Vanilla JS**. No React, no vector DB.
+Built with **Python + Flask + HTML/CSS/Vanilla JS**.
 
 ---
 
@@ -19,7 +19,7 @@ Built with **Python + Flask + SQLite + HTML/CSS/Vanilla JS**. No React, no vecto
 - Paper library with open/delete
 - Basic comparison of two papers
 
-### How the grounded answers work (Lightweight RAG using TF-IDF)
+### How the grounded answers work 
 
 ```
 Question -> TF-IDF search over stored chunks -> top 3-5 chunks
@@ -36,8 +36,7 @@ Greetings like "hi" / "hello" are answered directly without retrieval.
 
 | Layer     | Tech                                    |
 |-----------|-----------------------------------------|
-| Backend   | Python 3, Flask                         |
-|   |            |
+| Backend   | Python 3,                               |
 | PDF       | pypdf                                   |
 | AI        | Gemini API (`google-generativeai`)      |
 | Search    | scikit-learn TF-IDF + cosine similarity |
@@ -54,10 +53,7 @@ researchmate_ai/
 ├── ai_service.py     # TF-IDF retrieval + Gemini prompts
 ├── requirements.txt
 ├── .env              # your Gemini key (create from .env.example)
-├── run.bat           # one-click run on Windows
-├── build_exe.bat     # build the .exe on Windows
 ├── README.md
-├── researchmate.db   # created automatically
 ├── uploads/          # uploaded PDFs
 ├── templates/
 │   ├── base.html
@@ -67,20 +63,6 @@ researchmate_ai/
     ├── style.css
     └── script.js
 ```
-
----
-
-## 🚀 Installation
-
-```bash
-python -m venv venv
-```
-
-Activate it:
-
-- Windows: `venv\Scripts\activate`
-- Mac/Linux: `source venv/bin/activate`
-
 Install dependencies:
 
 ```bash
@@ -90,8 +72,7 @@ pip install -r requirements.txt
 ### Configure the Gemini API key
 
 1. Get a free key at https://aistudio.google.com/apikey
-2. Copy `.env.example` to `.env`
-3. Put your key inside:
+2. Put your key inside:
 
 ```
 GEMINI_API_KEY=your_api_key_here
@@ -106,26 +87,6 @@ python app.py
 ```
 
 Open http://127.0.0.1:5000 (it opens automatically).
-
-On Windows you can simply double-click **run.bat**.
-
----
-
-## 💻 Building the .exe (Windows)
-
-Double-click **build_exe.bat**. It installs PyInstaller and produces:
-
-```
-dist\ResearchMateAI.exe
-```
-
-Copy your `.env` file next to the `.exe`, then double-click it — the browser opens
-automatically at http://127.0.0.1:5000. The `uploads/` folder and `researchmate.db`
-are created beside the `.exe`.
-
-> Note: a Windows `.exe` must be built on a Windows machine.
-
----
 
 ## 🎬 Demo Flow
 
