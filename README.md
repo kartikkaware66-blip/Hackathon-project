@@ -37,10 +37,11 @@ Greetings like "hi" / "hello" are answered directly without retrieval.
 | Layer     | Tech                                    |
 |-----------|-----------------------------------------|
 | Backend   | Python 3, Flask                         |
+|   |            |
 | PDF       | pypdf                                   |
 | AI        | Gemini API (`google-generativeai`)      |
 | Search    | scikit-learn TF-IDF + cosine similarity |
-| Frontend  | HTML5, CSS3, Vanilla JS       |
+| Frontend  | HTML5, CSS3, Vanilla JS, Jinja2         |
 
 ---
 
@@ -53,7 +54,10 @@ researchmate_ai/
 ├── ai_service.py     # TF-IDF retrieval + Gemini prompts
 ├── requirements.txt
 ├── .env              # your Gemini key (create from .env.example)
+├── run.bat           # one-click run on Windows
+├── build_exe.bat     # build the .exe on Windows
 ├── README.md
+├── researchmate.db   # created automatically
 ├── uploads/          # uploaded PDFs
 ├── templates/
 │   ├── base.html
@@ -66,6 +70,16 @@ researchmate_ai/
 
 ---
 
+## 🚀 Installation
+
+```bash
+python -m venv venv
+```
+
+Activate it:
+
+- Windows: `venv\Scripts\activate`
+- Mac/Linux: `source venv/bin/activate`
 
 Install dependencies:
 
@@ -89,7 +103,21 @@ The key stays on the server — the browser never sees it.
 
 ```bash
 python app.py
--
+```
+
+Open http://127.0.0.1:5000 (it opens automatically).
+
+On Windows you can simply double-click **run.bat**.
+
+---
+
+## 💻 Building the .exe (Windows)
+
+Double-click **build_exe.bat**. It installs PyInstaller and produces:
+
+```
+dist\ResearchMateAI.exe
+```
 
 Copy your `.env` file next to the `.exe`, then double-click it — the browser opens
 automatically at http://127.0.0.1:5000. The `uploads/` folder and `researchmate.db`
