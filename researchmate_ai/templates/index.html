@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}ResearchMate AI | AI Research Assistant{% endblock %}
+
+{% block content %}
+<div class="page">
+
+  {% if error %}<div class="error-box">{{ error }}</div>{% endif %}
+
+  {% if not library_view %}
+  <section class="hero">
+    <span class="badge">AIML</span>
+    <h1>AI Research Assistant</h1>
+    <p class="tagline">Read Less. Understand More.</p>
+    <p class="lead">
+      Upload research papers, generate concise summaries, ask grounded questions,
+      search research content, and compare papers.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#upload">Upload Research Paper</a>
+      <a class="btn btn-ghost" href="{{ url_for('library') }}">View Paper Library</a>
+    </div>
+  </section>
+
+  <section class="grid grid-4">
+    <div class="card feature"><div class="emoji">📄</div><h3>AI Paper Summary</h3>
+      <p>Generate concise summaries covering the research problem, methodology, findings, limitations, and future scope.</p></div>
+    <div class="card feature"><div class="emoji">💬</div><h3>AI Research Chat</h3>
+      <p>Ask questions about your research paper and receive answers grounded in the uploaded content.</p></div>
+    <div class="card feature"><div class="emoji">🔎</div><h3>Smart Paper Search</h3>
+      <p>Find relevant sections of a paper using simple similarity-based search.</p></div>
+    <div class="card feature"><div class="emoji">⚖️</div><h3>Paper Comparison</h3>
+      <p>Compare two research papers and understand their similarities and differences.</p></div>
+  </section>
+
+  <section class="card steps">
+    <h2>How It Works</h2>
+    <div class="grid grid-4">
+      <div class="step"><span>01</span><p>Upload Paper</p></div>
+      <div class="step"><span>02</span><p>Extract Content</p></div>
+      <div class="step"><span>03</span><p>Analyze Research</p></div>
+      <div class="step"><span>04</span><p>Ask AI</p></div>
+    </div>
+  </section>
+
+  <section class="grid grid-3">
+    <div class="card stat"><h4>Total Papers</h4><strong>{{ stats.papers or 0 }}</strong></div>
+    <div class="card stat"><h4>Total Pages</h4><strong>{{ stats.pages or 0 }}</strong></div>
+    <div class="card stat"><h4>Research Sections</h4><strong>{{ stats.chunks or 0 }}</strong></div>
+  </section>
+
+  <section class="card upload-card" id="upload">
+    <div class="emoji big">📄</div>
+    <h2>Upload Research Paper</h2>
+    <p class="muted">Only text-based PDF files up to 10 MB.</p>
+    <form id="uploadForm" method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+      <input type="file" id="pdfFile" name="pdf_file" accept=".pdf" />
+      <button class="btn btn-primary" type="submit">Upload PDF</button>
+    </form>
+    <p class="error-text" id="uploadError"></p>
+  </section>
+  {% endif %}
+
+  <section>
+    <h2 class="section-title">{{ "Paper Library" if library_view else "Recent Papers" }}</h2>
+    {% if papers %}
+    <div class="grid grid-3">
+      {% for paper in papers %}
+      <div class="card paper-card">
+        <h3>{{ paper.title }}</h3>
+        <p class="muted">{{ paper.pages }} Pages &middot; {{ "{:,}".format(paper.word_count) }} Words</p>
+        <p class="muted small">Uploaded: {{ paper.created_at }}</p>
+        <div class="row">
+          <a class="btn btn-primary small" href="{{ url_for('paper_page', paper_id=paper.id) }}">Open Paper</a>
+          <button class="btn btn-danger small" onclick="deletePaper({{ paper.id }})">Delete</button>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="card empty">
+      <p>No research papers uploaded yet.</p>
+      <a class="btn btn-primary" href="{{ url_for('home') }}#upload">Upload Research Paper</a>
+    </div>
+    {% endif %}
+  </section>
+
+  {% if library_view and papers|length > 1 %}
+  <section class="card">
+    <h2>⚖️ Compare Two Papers</h2>
+    <div class="row">
+      <select id="compareA">
+        {% for p in papers %}<option value="{{ p.id }}">{{ p.title[:50] }}</option>{% endfor %}
+      </select>
+      <select id="compareB">
+        {% for p in papers %}<option value="{{ p.id }}">{{ p.title[:50] }}</option>{% endfor %}
+      </select>
+      <button class="btn btn-primary" id="compareButton">Compare</button>
+    </div>
+    <div id="compareResult" class="output"></div>
+  </section>
+  {% endif %}
+
+</div>
+{% endblock %}

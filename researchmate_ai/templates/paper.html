@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ paper.title }} | ResearchMate AI{% endblock %}
+{% block paper_id %}{{ paper.id }}{% endblock %}
+
+{% block content %}
+<div class="page">
+
+  <section class="paper-head">
+    <h1>{{ paper.title }}</h1>
+    <p class="muted">{{ paper.pages }} Pages &middot; {{ "{:,}".format(paper.word_count) }} Words &middot; Uploaded {{ paper.created_at }}</p>
+  </section>
+
+  <div class="two-col">
+    <div class="col">
+
+      <section class="card">
+        <h2>🤖 AI Research Summary</h2>
+        <button class="btn btn-primary" id="summaryButton">Generate AI Summary</button>
+        <div class="output" id="summaryOutput">{{ summary or "No summary generated yet." }}</div>
+      </section>
+
+      <section class="card">
+        <h2>🔎 Search This Paper</h2>
+        <div class="row">
+          <input type="text" id="searchInput" placeholder="Search for a concept, method, result..." />
+          <button class="btn btn-primary" id="searchButton">Search</button>
+        </div>
+        <div id="searchResults"></div>
+      </section>
+
+      <section class="card">
+        <h2>Paper Information</h2>
+        <ul class="info-list">
+          <li><span>Title</span><b>{{ paper.title }}</b></li>
+          <li><span>Pages</span><b>{{ paper.pages }}</b></li>
+          <li><span>Words</span><b>{{ "{:,}".format(paper.word_count) }}</b></li>
+          <li><span>Uploaded</span><b>{{ paper.created_at }}</b></li>
+        </ul>
+        <button class="btn btn-danger small" onclick="deletePaper({{ paper.id }})">Delete Paper</button>
+      </section>
+    </div>
+
+    <div class="col">
+      <section class="card chat-card">
+        <h2>💬 Ask ResearchMate AI</h2>
+        <p class="muted">Ask questions about this research paper.</p>
+        <div class="chips">
+          <button class="chip">What is the main contribution of this paper?</button>
+          <button class="chip">What methodology was used?</button>
+          <button class="chip">What are the limitations?</button>
+          <button class="chip">What were the key findings?</button>
+        </div>
+
+        <div class="notice">🔒 <b>Grounded Research Mode</b> — Answers are generated using relevant content from your uploaded paper. If the information is not found, ResearchMate AI will tell you.</div>
+
+        <div id="chatMessages" class="chat-messages">
+          <div class="msg ai"><span class="avatar">🤖</span><div class="bubble">Welcome to <b>ResearchMate AI</b>! Ask a question about this paper and I will answer using only its content, with page citations.</div></div>
+        </div>
+
+        <div class="row">
+          <input type="text" id="chatInput" placeholder="Ask a question about this paper..." />
+          <button class="btn btn-primary" id="chatButton">Ask AI →</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %}

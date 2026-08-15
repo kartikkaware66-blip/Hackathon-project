@@ -1,0 +1,5 @@
+Flask
+pypdf
+python-dotenv
+scikit-learn
+google-generativeai
